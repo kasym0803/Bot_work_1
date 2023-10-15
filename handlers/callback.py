@@ -14,14 +14,19 @@ async def start_questionnaire(call: types.CallbackQuery):
 
 async def yes_answer(call: types.CallbackQuery):
     print(call)
-    await bot.send_message(
+    await bot.edit_message_text(
         chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
         text="ok",
     )
 
 
 async def no_answer(call: types.CallbackQuery):
     print(call)
+    await bot.delete_message(
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id
+    )
     await bot.send_message(
         chat_id=call.message.chat.id,
         text="Glad you r not hungry",
