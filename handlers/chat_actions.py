@@ -1,18 +1,19 @@
 import sqlite3
 
 from aiogram import types, Dispatcher
-from config import bot
+from config import bot, GROUP_ID
 from database.sql_commands import Database
 
 
 async def chat_action(message: types.Message):
-    ban_word = ["fuck", "bitch", "damn"]
+    ban_words = ["fuck", "bitch", "damn"]
     print(message.chat.id)
-    if message.chat.id == -3491649186494:
-        for word in ban_word:
+    print(message.from_user.id)
+    if message.chat.id in GROUP_ID:
+        for word in ban_words:
             if word in message.text.lower().replace(' ', "",):
-                user = Database().sql_select_user_query(
-                    telegram_id=message.from_user.id,
+                user = Database().sql_select_ban_users(
+                    telegram_id=message.from_user.id
                 )
                 print(user)
                 if user:

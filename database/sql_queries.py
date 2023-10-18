@@ -20,6 +20,18 @@ CREATE_BAN_USER_TABLE_QUERY = """
         UNIQUE (TELEGRAM_ID)
         )
 """
+CREAT_ANKETA_TABLE_QUERY = """
+        CREATE TABLE IF NOT EXISTS anketa_users 
+        (
+        ID INTEGER PRIMARY KEY,
+        TELEGRAM_ID INTEGER,
+        USERNAME CHAR(50),
+        BIO TEXT,
+        PHOTO TEXT,
+        UNIQUE (TELEGRAM_ID)
+        )
+"""
+INSERT_ANKETA_USERS_QUERY = """INSERT OR IGNORE INTO anketa_users VALUES (?,?,?,?,?)"""
 
 INSERT_USER_QUERY = """
 INSERT OR IGNORE INTO telegram_users VALUES (?,?,?,?,?)
@@ -32,9 +44,10 @@ SELECT * FROM telegram_users
 SELECT_USER_QUERY = """
 SELECT * FROM telegram_users WHERE TELEGRAM_ID = ?
 """
+SELECT_BAN_USERS_QUERY = """SELECT TELEGRAM_ID FROM ban_users WHERE TELEGRAM_ID = ?"""
 
 INSERT_BAN_USER_QUERY = """
-INSERT INTO ban_users VALUES(?,?,?,?)
+INSERT OR IGNORE INTO ban_users VALUES(?,?,?,?)
 """
 
 UPDATE_BAN_USER_COUNT_QUERY = """

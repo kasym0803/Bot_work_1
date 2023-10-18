@@ -13,6 +13,7 @@ class Database:
 
         self.connection.execute(sql_queries.CREATE_USER_TABLE_QUERY)
         self.connection.execute(sql_queries.CREATE_BAN_USER_TABLE_QUERY)
+        self.connection.execute(sql_queries.CREAT_ANKETA_TABLE_QUERY)
         self.connection.commit()
 
     def sql_insert_user_query(self, telegram_id, username, first_name, last_name):
@@ -48,7 +49,7 @@ class Database:
         )
         self.connection.commit()
 
-    def sql_select_user_query(self, telegram_id):
+    def sql_select_user_form_query(self, telegram_id):
         self.cursor.row_factory = lambda cursor, row: {
             'id': row[0],
             "telegram_id": row[1],
@@ -60,3 +61,16 @@ class Database:
             sql_queries.SELECT_USER_QUERY,
             (telegram_id,)
         ).fetchall()
+
+    def sql_select_ban_users(self, telegram_id):
+        return self.cursor.execute(
+            sql_queries.SELECT_BAN_USERS_QUERY,
+            (telegram_id,)
+        ).fetchall()
+
+    def sql_insert_anketa_users(self, telegram_id, username, bio, photo):
+        self.cursor.execute(
+            sql_queries.INSERT_ANKETA_USERS_QUERY,
+            (None, telegram_id, username, bio, photo)
+        )
+        self.connection.commit()
