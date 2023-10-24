@@ -74,3 +74,16 @@ class Database:
             (None, telegram_id, username, bio, photo)
         )
         self.connection.commit()
+
+    def sql_select_all_user_form_query(self):
+        # self.cursor.row_factory = lambda cursor, row: {
+        #     'id': row[0],
+        #     "telegram_id": row[1],
+        #     "nickname": row[2],
+        #     "bio": row[3],
+        #     "age": row[4],
+        #     "photo": row[5],
+        # }
+        return self.cursor.execute(
+            sql_queries.SELECT_ALL_FORM_USERS_QUERY
+        ).fetchall()

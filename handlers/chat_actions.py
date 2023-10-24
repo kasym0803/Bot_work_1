@@ -11,10 +11,14 @@ async def chat_action(message: types.Message):
     print(message.from_user.id)
     if message.chat.id in GROUP_ID:
         for word in ban_words:
-            if word in message.text.lower().replace(' ', "",):
+            if word in message.text.lower().replace(' ', "", ):
                 user = Database().sql_select_ban_users(
                     telegram_id=message.from_user.id
                 )
+                if user[0][3] >= 3:
+                    await bot.kick_chat_member(
+                        chat_id=message.chat.id,
+                        user_id=message.from_user.id)
                 print(user)
                 if user:
                     Database().sql_update_ban_user_query(
@@ -29,17 +33,17 @@ async def chat_action(message: types.Message):
                 await bot.delete_message(
                     chat_id=message.chat.id,
                     message_id=message.message_id
-                    )
+                )
                 await bot.send_message(
                     chat_id=message.chat.id,
                     text=f"No curse words in this chat\n"
                          f"Username: {message.from_user.username}"
-                    )
+                )
     else:
         await message.reply(
             text="There is no such a command\n"
                  "Maybe u mispronounced"
-                )
+        )
 
         #  await message.reply(
         #     text=message.text
@@ -48,4 +52,3 @@ async def chat_action(message: types.Message):
 
 def register_chat_actions_handlers(dp: Dispatcher):
     dp.register_message_handler(chat_action)
-

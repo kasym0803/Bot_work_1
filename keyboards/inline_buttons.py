@@ -7,7 +7,12 @@ async def start_keyboard():
         "Start Questionnaire",
         callback_data="start_questionnaire"
     )
+    profile_button = InlineKeyboardButton(
+        "view profile",
+        callback_data="random_profiles"
+    )
     markup.add(ques_button)
+    markup.add(profile_button)
     return markup
 
 
@@ -34,3 +39,20 @@ async def admin_keyboard():
     )
     markup.add(admin_user_list_button)
     return markup
+
+
+async def like_dislike_keyboard(owner_tg_id):
+    markup = InlineKeyboardMarkup()
+    user_form_like_button = InlineKeyboardButton(
+        "Like",
+        callback_data=f"user_form_like{owner_tg_id}",
+    )
+    user_form_dislike_button = InlineKeyboardButton(
+        "Dislike",
+        callback_data=f"random_profile"
+    )
+    markup.add(user_form_like_button)
+    markup.add(user_form_dislike_button)
+    return markup
+
+

@@ -30,6 +30,7 @@ CREAT_ANKETA_TABLE_QUERY = """
         PHOTO TEXT,
         UNIQUE (TELEGRAM_ID)
         )
+
 """
 INSERT_ANKETA_USERS_QUERY = """INSERT OR IGNORE INTO anketa_users VALUES (?,?,?,?,?)"""
 
@@ -40,11 +41,13 @@ INSERT OR IGNORE INTO telegram_users VALUES (?,?,?,?,?)
 SELECT_ALL_USERS_QUERY = """
 SELECT * FROM telegram_users
 """
-
+SELECT_ALL_FORM_USERS_QUERY = """
+SELECT * FROM anketa_users
+"""
 SELECT_USER_QUERY = """
 SELECT * FROM telegram_users WHERE TELEGRAM_ID = ?
 """
-SELECT_BAN_USERS_QUERY = """SELECT TELEGRAM_ID FROM ban_users WHERE TELEGRAM_ID = ?"""
+SELECT_BAN_USERS_QUERY = """SELECT * FROM ban_users WHERE TELEGRAM_ID = ?"""
 
 INSERT_BAN_USER_QUERY = """
 INSERT OR IGNORE INTO ban_users VALUES(?,?,?,?)
