@@ -38,7 +38,7 @@ async def load_bio(message: types.Message, state: FSMContext):
 
 
 async def load_photo(message: types.Message, state: FSMContext):
-    photo = await message.photo[-1].download(destination='C:/Users/User/.vscode/Bot_34-1_work1/media')
+    photo = await message.photo[-1].download(destination_dir='C:/Users/User/.vscode/Bot_34-1_work1/media')
     async with state.proxy() as data:
         data['photo'] = photo.name
     photo_path = data["photo"]
@@ -55,7 +55,9 @@ async def submit(message: types.Message, state: FSMContext):
                                                username=data['username'],
                                                bio=data['bio'],
                                                photo=data['photo'])
-        await message.answer('Вы были добавленны в базу данных')
+            print(data)
+            await message.answer('Вы были добавленны в базу данных')
+            await state.finish()
     elif message.text.lower() == "нет":
         await message.answer('Отменено')
         await state.finish()
@@ -66,6 +68,7 @@ async def submit(message: types.Message, state: FSMContext):
 async def random_profiles_call(call: types.CallbackQuery):
     users = Database().sql_select_all_user_form_query()
     random_choise = random.choice(users)
+    print(random_choise)
     photoss = random_choise[4]
     with open(photoss, 'rb') as photo:
         await bot.send_photo(
@@ -73,15 +76,8 @@ async def random_profiles_call(call: types.CallbackQuery):
             photo=photo,
             caption=f"Nickname: {random_choise[2]}\n"
                     f"Bio: {random_choise[3]}\n",
-            reply_markup=await like_dislike_keyboard(owner_tg_id=random_choise[1]),
+            reply_markup=await like_dislike_keyboard(),
         )
-
-
-async def like_detect_call(call: types.CallbackQuery):
-    print(call.data)
-    owner_tg_id = re.sub("user_form_like", '', call.data)
-    print(owner_tg_id)
-
 
 
 def register_fsm_handlers(dp: Dispatcher):
@@ -90,6 +86,6 @@ def register_fsm_handlers(dp: Dispatcher):
     dp.register_message_handler(load_bio, state=Anceta.bio, content_types=['text'])
     dp.register_message_handler(load_photo, state=Anceta.photo, content_types=['photo'])
     dp.register_message_handler(submit, state=Anceta.submit, content_types=['text'])
-    dp.register_callback_query_handler(random_profiles_call, lambda call: call.data == 'random_profiles')
-    dp.register_callback_query_handler(like_detect_call, lambda call: 'user_form_like' in call.data)
-
+    dp.register_callback_query_handler(random_profiles_call, lambda call: call.data == 'random_profiles'
+                                                                          or call.data == f'user_form_like'
+                                                                          or call.data == f'user_form_dislike')

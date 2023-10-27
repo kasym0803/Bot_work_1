@@ -11,8 +11,13 @@ async def start_keyboard():
         "view profile",
         callback_data="random_profiles"
     )
+    referenc_button = InlineKeyboardButton(
+        "Referall menu",
+        callback_data="referall"
+    )
     markup.add(ques_button)
     markup.add(profile_button)
+    markup.add(referenc_button)
     return markup
 
 
@@ -41,18 +46,32 @@ async def admin_keyboard():
     return markup
 
 
-async def like_dislike_keyboard(owner_tg_id):
+async def like_dislike_keyboard():
     markup = InlineKeyboardMarkup()
     user_form_like_button = InlineKeyboardButton(
         "Like",
-        callback_data=f"user_form_like{owner_tg_id}",
+        callback_data=f"user_form_like",
     )
     user_form_dislike_button = InlineKeyboardButton(
         "Dislike",
-        callback_data=f"random_profile"
+        callback_data=f"user_form_dislike",
     )
     markup.add(user_form_like_button)
     markup.add(user_form_dislike_button)
     return markup
 
 
+async def reference_button():
+    markup = InlineKeyboardMarkup()
+    reference_link_button = InlineKeyboardButton(
+        "reference link",
+        callback_data='reference_link'
+    )
+    reference_list_button = InlineKeyboardButton(
+        "reference list",
+        callback_data='reference_list'
+    )
+
+    markup.add(reference_link_button)
+    markup.add(reference_list_button)
+    return markup

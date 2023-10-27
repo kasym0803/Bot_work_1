@@ -3,6 +3,7 @@ import sqlite3
 from aiogram import types, Dispatcher
 from config import bot
 from database.sql_commands import Database
+from aiogram.utils.deep_linking import _create_link
 from keyboards.inline_buttons import (
     start_keyboard,
     admin_keyboard,
@@ -11,7 +12,27 @@ from keyboards.inline_buttons import (
 
 async def start_but(massage: types.Message):
     print(massage)
-    # try:
+    print(massage.get_full_command())
+    command = massage.get_full_command()
+    if command[1]:
+        link = await _create_link(link_type="start", payload=command[1])
+        owner = Database().sql_select_by_link_query(
+            link=link
+        )
+        if owner[0]["telegram_id"] == massage.from_user.id:
+            await bot.send_message(
+                chat_id=massage.from_user.id,
+                text=f"You can not use own referral link"
+            )
+            return
+        print(f"owner{owner}")
+        try:
+            Database().sql_insert_referal_query(
+            owner=owner[0]['telegram_id'],
+            referal=massage.from_user.id
+        )
+        except sqlite3.IntegrityError:
+            pass
     Database().sql_insert_user_query(
             telegram_id=massage.from_user.id,
             username=massage.from_user.username,
