@@ -15,7 +15,11 @@ async def start_keyboard():
         "Referall menu",
         callback_data="referall"
     )
-    markup.add(ques_button)
+    link_button = InlineKeyboardButton(
+        'Заказы в Habr',
+        callback_data='link_button'
+    )
+    markup.add(ques_button, link_button)
     markup.add(profile_button)
     markup.add(referenc_button)
     return markup
