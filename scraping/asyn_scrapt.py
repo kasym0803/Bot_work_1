@@ -25,7 +25,7 @@ class Async_Scraper:
     async def async_scrapers(self):
         urls = []
         async with httpx.AsyncClient(headers=self.HEADERS) as client:
-            async for page in self.async_gererator(limit=3):
+            async for page in self.async_gererator(limit=5):
                 url = await self.get_url(client=client, url=self.URL)
                 urls.append(url)
         return urls
