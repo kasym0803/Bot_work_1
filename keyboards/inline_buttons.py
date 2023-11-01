@@ -8,20 +8,25 @@ async def start_keyboard():
         callback_data="start_questionnaire"
     )
     profile_button = InlineKeyboardButton(
-        "view profile",
+        "view profile 🎲",
         callback_data="random_profiles"
     )
     referenc_button = InlineKeyboardButton(
-        "Referall menu",
+        "Referall menu 💻",
         callback_data="referall"
     )
     link_button = InlineKeyboardButton(
-        'Заказы в Habr',
+        'Заказы в Habr 🛹',
         callback_data='link_button'
+    )
+    async_link_button = InlineKeyboardButton(
+        'Кнопка новостей',
+        callback_data='link_button_async'
     )
     markup.add(ques_button, link_button)
     markup.add(profile_button)
     markup.add(referenc_button)
+    markup.add(async_link_button)
     return markup
 
 
